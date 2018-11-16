@@ -10,8 +10,9 @@ end
 50.times do
   now = Time.now
   shipped_at = [nil, now - Faker::Number.between(1, 24).hours - Faker::Number.between(1, 365).days].sample
+  created_at = shipped_at - Faker::Number.between(1, 7).days if shipped_at
 
-  Order.create!(shipped_at: shipped_at)
+  Order.create!(shipped_at: shipped_at, created_at: created_at)
 end
 
 # For each generated Order, create a random amount of LineItems using first_or_create to ensure no duplicates
