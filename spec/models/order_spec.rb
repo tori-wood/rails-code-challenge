@@ -60,7 +60,7 @@ RSpec.describe Order, type: :model do
     let(:sorted_orders) { Order.order(:shipped_at) }
 
     before do
-      3.times { shipped_orders << create(:order, shipped_at: Time.now + Random.rand(300).hours) }
+      3.times { shipped_orders << create(:order, shipped_at: Time.now - Random.rand(300).hours) }
       sorted_shipped << shipped_orders.sort_by { |order| order.shipped_at }
       sorted_all << (shipped_orders << unshipped_orders)
     end
