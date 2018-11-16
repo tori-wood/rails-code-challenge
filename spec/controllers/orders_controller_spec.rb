@@ -7,7 +7,7 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe '#show' do
-    let(:order) { Order.create! }
+    let(:order) { create(:order) }
     subject { get :show, params: { id: order.id } }
     it { is_expected.to have_http_status(:ok) }
   end
