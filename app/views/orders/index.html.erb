@@ -3,12 +3,40 @@
     <title>Orders</title>
   </head>
   <body>
-    <h1>Orders</h1>
+    <div>
+      <h1>Shipped Orders</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Order Number</th>
+            <th>Shipped On:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @shipped_orders.each do |order| %>
+            <tr>
+              <td><%= link_to order.id, order_path(order) %></td>
+              <td><%= order.shipped_at.strftime('%m/%d/%Y')%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
-    <ul>
-    <% @orders.each do |order| %>
-      <li><%= link_to order.id, order_path(order) %></li>
-    <% end %>
-    </ul>
+      <h1>Unshipped Orders</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Order Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @unshipped_orders.each do |order| %>
+            <tr>
+              <td><%= link_to order.id, order_path(order) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </body>
 </html>
