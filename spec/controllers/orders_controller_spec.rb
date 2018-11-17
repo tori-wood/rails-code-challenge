@@ -11,4 +11,9 @@ RSpec.describe OrdersController, type: :controller do
     subject { get :show, params: { id: order.id } }
     it { is_expected.to have_http_status(:ok) }
   end
+
+  describe '#new' do
+    subject { get :new }
+    it { is_expected.to have_http_status(:ok) }
+  end
 end
