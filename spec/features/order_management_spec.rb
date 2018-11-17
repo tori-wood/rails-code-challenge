@@ -11,4 +11,13 @@ RSpec.feature 'Order management', :type => :feature do
     expect(current_path).to eq order_path(order_id)
     expect(page).to have_text("Order #{order_id}")
   end
+
+  it 'User creates a new order' do 
+    visit new_order_path
+    check 'expedite'
+
+    click_button 'Submit'
+
+    expect(page).to have_text("Your order has been submitted.")
+  end
 end
