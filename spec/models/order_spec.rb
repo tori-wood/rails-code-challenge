@@ -14,22 +14,42 @@ RSpec.describe Order, type: :model do
     end
   end
 
-  describe '#settings' do
-    it { is_expected.to respond_to(:settings) }
+  describe '#expedited?' do
+    it { is_expected.to respond_to(:expedited?) }
 
-    context 'when expedite is present' do
-      before { subject.settings(expedite: true) }
+    context 'when expedite is true' do
+      before { subject.update(expedite: true) }
       it { is_expected.to be_expedited }
     end
 
-    context 'when returns is present' do
-      before { subject.settings(returns: true) }
+    context 'when expedite is false' do
+      it { is_expected.to_not be_expedited }
+    end
+  end
+
+  describe '#returnable?' do
+    it { is_expected.to respond_to(:returnable?) }
+
+    context 'when returns is true' do
+      before { subject.update(returns: true) }
       it { is_expected.to be_returnable }
     end
 
-    context 'when warehouse is present' do
-      before { subject.settings(warehouse: true) }
+    context 'when returns is false' do
+      it { is_expected.to_not be_returnable }
+    end
+  end
+
+    describe '#warehoused?' do
+    it { is_expected.to respond_to(:warehoused?) }
+
+    context 'when warehouse is true' do
+      before { subject.update(warehouse: true) }
       it { is_expected.to be_warehoused }
+    end
+
+    context 'when warehouse is false' do
+      it { is_expected.to_not be_warehoused }
     end
   end
 
@@ -57,12 +77,16 @@ RSpec.describe Order, type: :model do
     let(:sorted_shipped) { [] }
     let(:sorted_all) { [] }
     let(:unshipped_orders) { create_list(:order, 3, :unshipped) }
-    let(:sorted_orders) { Order.order(:shipped_at) }
 
     before do
-      3.times { shipped_orders << create(:order, shipped_at: Time.now - Random.rand(300).hours) }
-      sorted_shipped << shipped_orders.sort_by { |order| order.shipped_at }
-      sorted_all << (shipped_orders << unshipped_orders)
+      3.times do
+        shipped_at = Time.now - Faker::Number.between(1, 300).hours
+        shipped_orders << create(:order, shipped_at: shipped_at, created_at: shipped_at - 2.hours)
+      end
+
+      sorted_shipped << shipped_orders.sort! { |order_a, order_b| order_b.shipped_at <=> order_a.shipped_at }
+      sorted_all << sorted_shipped
+      sorted_all << unshipped_orders
     end
 
     context ':latest' do
@@ -72,8 +96,8 @@ RSpec.describe Order, type: :model do
         end
 
         it 'orders by column passed in' do
-          sorted_by_created_at = Order.all.sort_by { |order| order.created_at }
-          expect(Order.latest(:created_at)).to match_array(sorted_by_created_at.flatten)
+          sorted_by_created_at = Order.all.order(created_at: :desc)
+          expect(Order.latest(:created_at)).to match_array(sorted_by_created_at)
         end
       end
 
