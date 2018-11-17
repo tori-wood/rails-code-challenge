@@ -10,4 +10,9 @@ RSpec.describe LineItem, type: :model do
   it { is_expected.to validate_presence_of(:quantity) }
   it { is_expected.to validate_presence_of(:unit_price) }
   it { is_expected.to validate_presence_of(:widget) }
+
+  describe 'associations' do
+    it { should belong_to(:order) }
+    it { should belong_to(:widget) }
+  end
 end

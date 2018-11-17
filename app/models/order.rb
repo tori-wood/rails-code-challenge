@@ -1,5 +1,7 @@
 class Order < ApplicationRecord
 
+  has_many :line_items
+
   def shipped?
     shipped_at.present?
   end
