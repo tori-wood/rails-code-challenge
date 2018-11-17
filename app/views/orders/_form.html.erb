@@ -1,0 +1,7 @@
+<div>
+  <%= form_with model: Order.new do |form| %>
+    <%= check_box_tag(:expedite) %>
+    <%= label_tag(:expedite, "Expedited Shipping") %>
+    <p> <%= form.submit "Submit" %></p>
+  <% end %>
+</div>
