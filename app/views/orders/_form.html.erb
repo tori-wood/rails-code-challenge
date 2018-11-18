@@ -1,0 +1,21 @@
+<div class="form-container">
+ <%= form_for @order do |f| %>
+  <div class="form-inputs">
+    <%= f.label :expedite, "Expedited shipping?", class: "control-label" %>
+    <%= f.check_box :expedite %>
+  </div>
+  <h2>Add Items</h2>
+  <table class='table'>
+    <tbody class='fields'>
+      <%= f.fields_for :line_items do |builder| %>
+        <%= render 'line_item_fields', f: builder %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="form-actions">
+    <%= link_to_add_row('+ Add Item', f, :line_items, class: 'btn btn-info') %>
+    <%= f.button "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
+</div>
