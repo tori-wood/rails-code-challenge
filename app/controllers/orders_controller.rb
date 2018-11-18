@@ -22,7 +22,9 @@ class OrdersController < ApplicationController
       flash[:success] = "Your order has been submitted. We'll let you know when we send it your way!"
       redirect_to @order
     else
-      flash[:error] = "There seems to be an issue with your order."
+      if @order.errors.any?
+        flash[:danger] = "<b>Uh oh, looks like you've got some errors to handle:</b><br/> #{@order.errors.full_messages.join("<br/>")}"
+      end
       render action: "new"
     end
   end

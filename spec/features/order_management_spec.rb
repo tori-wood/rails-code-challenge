@@ -30,13 +30,35 @@ RSpec.feature 'Order management', :type => :feature do
     expect(LineItem.count).to eq line_item_count + 1
   end
 
-  it 'User creates a new order with missing fields; neither order nor line items created' do
-    widget = create(:widget)
+  it 'User attempts to create a new order with missing widget' do
     visit new_order_path
-    select(widget.name, from: 'Widget', visible: false)
+    fill_in('Quantity', with: 3)
+    fill_in('Unit Price', with: 4)
 
     click_button 'Submit'
 
-    expect(page).to have_text("There seems to be an issue with your order.")
+    expect(page).to have_text("Line items widget must exist")
+  end
+
+  it 'User attempts to create a new order with quantity less than 0' do
+    widget = create(:widget)
+    visit new_order_path
+    select(widget.name, from: 'Widget', visible: false)
+    fill_in('Quantity', with: -1)
+    fill_in('Unit Price', with: 4)
+    click_button 'Submit'
+
+    expect(page).to have_text("Line items quantity must be greater than 0")
+  end
+
+  it 'User creates a new order with unit price less than 0' do
+    widget = create(:widget)
+    visit new_order_path
+    select(widget.name, from: 'Widget', visible: false)
+    fill_in('Quantity', with: 3)
+    fill_in('Unit Price', with: -4)
+    click_button 'Submit'
+
+    expect(page).to have_text("Line items unit price must be greater than 0")
   end
 end

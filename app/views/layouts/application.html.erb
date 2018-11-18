@@ -12,7 +12,7 @@
   <body>
     <div class="container text-center">
       <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key %>"><%= value %>
+        <div class="alert alert-<%= key %>"><%= value.html_safe %>
           <% if key == "success" %>
           <pre id="ascii">
                 ____________________
