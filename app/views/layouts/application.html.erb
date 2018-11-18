@@ -10,9 +10,26 @@
   </head>
 
   <body>
-    <% flash.each do |key, value| %>
-      <div class="alert alert-<%= key %>"><%= value %></div>
-    <% end %>
+    <div class="container">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %>
+          <% if key == "success" %>
+          <pre style="background: none; border: none; font-size: 7px">
+                ____________________
+               |\                   \      l____
+               | \___________________\     |\   \
+               | |                    |    |\l___\___
+          [__]_[ |   Comin' at ya     |[\\]| |__|_\__\
+         /\[__]\ |                    |\[\\]\|. | |===\
+         \ \[__]\[____________________] \[__]|__|..___]
+          \/.-.\_______________________\/.-.\____\/.-.\
+           ( @ )                        ( @ )  =  ( @ )
+            `-'                          `-'       `-'
+          </pre>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
     <%= yield %>
   </body>
 </html>

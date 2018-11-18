@@ -1,9 +1,9 @@
-<div>
+  <div class="form-group">
   <%= form_for @order do |f| %>
-    <p>
-      <%= f.label :expedite, "Would you like this order to have expedited shipping?" %><br />
+      <%= f.label :expedite, "Expedited shipping?", class: "control-label" %>
       <%= f.check_box :expedite %>
-    </p>
+    <br />
+    <h3>Add Line Items</h3>
     <%= f.fields_for :line_items do |builder| %>
       <%= render "line_item_fields", :f => builder %>
     <% end %>

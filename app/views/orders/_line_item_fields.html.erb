@@ -1,10 +1,17 @@
-<p>
-  <%= f.label :widget_id, "Widget" %><br />
-  <%= f.collection_select :widget_id, Widget.order(:name), :id, :name, include_blank: true %><br />
-  <%= f.label :quantity, "Quantity" %><br />
-  <%= f.number_field :quantity %><br />
-  <%= f.label :unit_price, "Unit Price" %><br />
-  <%= f.number_field :unit_price %><br />
-  <%= f.check_box :_destroy %>
-  <%= f.label :_destroy, "Remove Item" %>
-</p>
+<%= f.label :widget_id, "Widget", class: "control-label" %> <br />
+<%= f.collection_select :widget_id, Widget.order(:name), :id, :name, include_blank: true, class: "form-control" %>
+
+<br />
+
+<%= f.label :quantity, "Quantity", class: "control-label" %>
+<%= f.number_field :quantity, class: "form-control" %>
+
+<br />
+
+<%= f.label :unit_price, "Unit Price", class: "control-label" %>
+<%= f.number_field :unit_price, class: "form-control" %>
+
+<br />
+
+<%= f.check_box :_destroy %>
+<%= f.label :_destroy, "Remove Item" %>
