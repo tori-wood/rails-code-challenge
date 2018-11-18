@@ -30,6 +30,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.fetch(:order, {}).permit(:expedite, line_items_attributes: [:id, :widget_id, :quantity, :unit_price])
+    params.fetch(:order, {}).permit(:expedite, line_items_attributes: [:id, :widget_id, :quantity, :unit_price, :_destroy])
   end
 end
