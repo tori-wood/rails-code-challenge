@@ -45,7 +45,7 @@ RSpec.describe Order, type: :model do
     end
   end
 
-    describe '#warehoused?' do
+  describe '#warehoused?' do
     it { is_expected.to respond_to(:warehoused?) }
 
     context 'when warehouse is true' do
@@ -55,6 +55,34 @@ RSpec.describe Order, type: :model do
 
     context 'when warehouse is false' do
       it { is_expected.to_not be_warehoused }
+    end
+  end
+
+  describe '#item_count' do
+    it { is_expected.to respond_to(:item_count) }
+
+    context 'when line_items are present' do
+      before { subject.update(line_items: [create(:line_item)]) }
+      it { expect(subject.item_count).to eq 1 }
+    end
+
+    context 'when line_items are not present' do
+      before { subject.update(line_items: []) }
+      it { expect(subject.item_count).to eq 0 }
+    end
+  end
+
+  describe '#order_total' do
+    it { is_expected.to respond_to(:order_total) }
+
+    context 'when line_items are present' do
+      before { subject.update(line_items: [create(:line_item, quantity: 2, unit_price: 3)]) }
+      it { expect(subject.order_total).to eq 6 }
+    end
+
+    context 'when line_items are not present' do
+      before { subject.update(line_items: []) }
+      it { expect(subject.order_total).to eq 0 }
     end
   end
 
