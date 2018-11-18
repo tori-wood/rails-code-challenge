@@ -1,0 +1,10 @@
+<p>
+  <%= f.label :widget_id, "Widget" %><br />
+  <%= f.collection_select :widget_id, Widget.order(:name), :id, :name, include_blank: true %><br />
+  <%= f.label :quantity, "Quantity" %><br />
+  <%= f.number_field :quantity %><br />
+  <%= f.label :unit_price, "Unit Price" %><br />
+  <%= f.number_field :unit_price %><br />
+  <%= f.check_box :_destroy %>
+  <%= f.label :_destroy, "Remove Item" %>
+</p>

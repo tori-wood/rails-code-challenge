@@ -1,7 +1,13 @@
 <div>
-  <%= form_with model: Order.new do |form| %>
-    <%= check_box_tag(:expedite) %>
-    <%= label_tag(:expedite, "Expedited Shipping") %>
-    <p> <%= form.submit "Submit" %></p>
+  <%= form_for @order do |f| %>
+    <p>
+      <%= f.label :expedite, "Would you like this order to have expedited shipping?" %><br />
+      <%= f.check_box :expedite %>
+    </p>
+    <%= f.fields_for :line_items do |builder| %>
+      <%= render "line_item_fields", :f => builder %>
+    <% end %>
+
+    <p><%= f.submit "Submit" %></p>
   <% end %>
 </div>
