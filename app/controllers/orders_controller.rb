@@ -7,11 +7,12 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.find(order_params[:id])
+    @order = Order.find(params[:id])
   end
 
   def new
     @order = Order.new
+    @order.line_items.build
   end
 
   def create
@@ -29,6 +30,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.permit(:id, :expedite)
+    params.fetch(:order, {}).permit(:expedite, line_items_attributes: [:id, :widget_id, :quantity, :unit_price])
   end
 end
