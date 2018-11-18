@@ -2,7 +2,9 @@ class Order < ApplicationRecord
 
   has_many :line_items
 
-  accepts_nested_attributes_for :line_items, :reject_if => lambda { |l| l[:widget_id].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :line_items, :reject_if => lambda { |l| l.values.any? { |a| a.nil? } }, :allow_destroy => true
+
+  validates :line_items, presence: true
 
   def shipped?
     shipped_at.present?

@@ -4,6 +4,23 @@ RSpec.describe Order, type: :model do
   describe 'associations' do
     it { should have_many(:line_items) }
     it { should accept_nested_attributes_for(:line_items) }
+
+    context 'when line_items present' do
+      it 'is valid' do
+        order = build(:order)
+        line_item = create(:line_item)
+        order.line_items = [line_item]
+        expect(order).to be_valid
+      end
+    end
+
+    context 'when line_items are not present' do
+      it 'is invalid' do
+        order = build(:order)
+        order.line_items = []
+        expect(order).to be_invalid
+      end
+    end
   end
 
   describe '#shipped?' do
