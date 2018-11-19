@@ -1,12 +1,54 @@
-<html>
-  <head>
-    <title>Order <%= @order.id %></title>
-  </head>
-  <body>
-    <h1>Order <%= @order.id %></h1>
-
-    <p>Created <%= @order.created_at %></p>
-    <p>Shipped <%= @order.shipped_at %></p>
-    
-  </body>
-</html>
+<div class="container">
+  <h1 class="text-center">Order <%= @order.id %> Summary</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center" scope="col">Created On</th>
+        <th class="text-center" scope="col">Status</th>
+        <% if @order.shipped? %>
+          <th class="text-center" scope="col">Shipped On</th>
+        <% end %>
+        <th class="text-center" scope="col">Number of Items</th>
+        <th class="text-center" scope="col">Order Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><%= @order.created_at.strftime('%m/%d/%Y') %></td>
+        <td class="text-center"><% if @order.shipped? %> Shipped <% else %> Processing <% end %></td>
+        <% if @order.shipped? %>
+          <td class="text-center"><%= @order.shipped_at.strftime('%m/%d/%Y') %></td>
+        <% end %>
+        <td class="text-center"><%= @order.item_count %></td>
+        <td class="text-center"><%= number_to_currency(@order.order_total) %></td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center" colspan="5">Item Summary</th>
+      </tr>
+      <tr>
+        <th class="text-center">Item Number</th>
+        <th class="text-center">Product #</th>
+        <th class="text-center">Product Name</th>
+        <th class="text-center">Quantity</th>
+        <th class="text-center">Unit Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <% @order.line_items.each do |item| %>
+        <tr>
+          <td class="text-center"><%= item.id %></td>
+          <td class="text-center"><%= item.widget_id %></td>
+          <td class="text-center"><%= item.widget.name %></td>
+          <td class="text-center"><%= item.quantity %></td>
+          <td class="text-center"><%= number_to_currency(item.unit_price) %></td>
+        </tr>
+      <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>

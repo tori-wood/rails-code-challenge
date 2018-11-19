@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  resources :orders, only: [:index, :show]
+  root to: 'orders#index'
+  resources :orders, only: [:index, :show, :new, :create]
 end

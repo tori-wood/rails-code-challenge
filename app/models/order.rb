@@ -1,23 +1,36 @@
 class Order < ApplicationRecord
-  def expedited?
-    @expedite
-  end
 
-  def returnable?
-    @returns
-  end
+  has_many :line_items
 
-  def settings(opts = {})
-    @expedite = opts[:expedite].presence
-    @returns = opts[:returns].presence
-    @warehouse = opts[:warehouse].presence
-  end
+  accepts_nested_attributes_for :line_items, :reject_if => lambda { |l| l.values.any? { |a| a.nil? } }, :allow_destroy => true
+
+  validates :line_items, presence: true
 
   def shipped?
     shipped_at.present?
   end
 
-  def warehoused?
-    @warehouse
+  def expedited?
+    expedite
   end
+
+  def returnable?
+    returns
+  end
+
+  def warehoused?
+    warehouse
+  end
+
+  def item_count
+    line_items.present? ? line_items.size : 0
+  end
+
+  def order_total
+    line_items.present? ? line_items.inject(0) { |sum, i| sum + i.unit_price * i.quantity } : 0
+  end
+
+  scope :shipped, -> { includes(:line_items).where('shipped_at is not null') }
+  scope :unshipped, -> { includes(:line_items).where('shipped_at is null') }
+  scope :latest, -> (column = :shipped_at) { order(column => :desc) }
 end
