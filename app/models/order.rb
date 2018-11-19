@@ -30,7 +30,7 @@ class Order < ApplicationRecord
     line_items.present? ? line_items.inject(0) { |sum, i| sum + i.unit_price * i.quantity } : 0
   end
 
-  scope :shipped, -> { where('shipped_at is not null') }
-  scope :unshipped, -> { where('shipped_at is null') }
+  scope :shipped, -> { includes(:line_items).where('shipped_at is not null') }
+  scope :unshipped, -> { includes(:line_items).where('shipped_at is null') }
   scope :latest, -> (column = :shipped_at) { order(column => :desc) }
 end
