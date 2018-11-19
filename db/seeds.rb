@@ -12,16 +12,16 @@ end
   shipped_at = [nil, now - Faker::Number.between(1, 24).hours - Faker::Number.between(1, 365).days].sample
   created_at = shipped_at - Faker::Number.between(1, 7).days if shipped_at
 
-  Order.create!(shipped_at: shipped_at, created_at: created_at)
-end
+  # For each generated Order, create a random amount of LineItems
+  order = Order.new(shipped_at: shipped_at, created_at: created_at)
 
-# For each generated Order, create a random amount of LineItems using first_or_create to ensure no duplicates
-Order.all.each do |order|
   Faker::Number.between(1, 5).times do
     widget_id = Faker::Number.between(1, Widget.all.size)
     quantity = Faker::Number.between(1, 10)
     unit_price = Faker::Commerce.price(range=1..50, as_string=false)
 
-    LineItem.where(order: order, widget_id: widget_id).first_or_create!(quantity: quantity, unit_price: unit_price)
+    li = LineItem.new(order: order, widget_id: widget_id, quantity: quantity, unit_price: unit_price)
+    order.line_items << li
   end
+  order.save!
 end
